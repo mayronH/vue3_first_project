@@ -1,28 +1,66 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <main>
+    <h1>{{ title }}</h1>
+
+    <!-- Using the ref object to get the input as javascript -->
+    <input type="text" ref="name" />
+    <button @click="handleRefs">click me</button>
+
+    <!-- Using a component -->
+    <!-- Passing props to the component -->
+    <!-- The @close is a custom event created in the ModalComponent -->
+    <ModalComponent v-if="showModal" :theme="theme" @close="toggleModal">
+      <h1>Hello There</h1>
+      <p>You can pass an entire template to the component, using slots</p>
+
+      <!-- Named Slot -->
+      <template v-slot:buttons>
+        <a href="" class="button">sign up</a>
+        <a href="" class="button">more info</a>
+      </template>
+    </ModalComponent>
+
+    <button @click="toggleModal">open modal</button>
+  </main>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import ModalComponent from "./components/ModalComponent";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    ModalComponent,
+  },
+  data() {
+    return {
+      title: "Hello World!",
+      header: "Header Title",
+      text: "Testing props",
+      theme: "sale",
+      showModal: false,
+    };
+  },
+  methods: {
+    handleRefs() {
+      // Using normal javascript to manipulate the input with refs
+      console.log(this.$refs.name);
+      this.$refs.name.classList.add("active");
+      this.$refs.name.focus();
+    },
+    toggleModal() {
+      this.showModal = !this.showModal;
+    },
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
 }
 </style>
